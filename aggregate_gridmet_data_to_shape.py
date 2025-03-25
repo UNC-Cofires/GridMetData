@@ -1,13 +1,21 @@
 import os
 import gridmetter as gdmt
+import argparse
 
-year_min = 2000 # initial year for historical data
-year_max = 2024 # final year for historical data
+# accepts command line arguments for weather type, netcdf key, and year range
+parser = argparse.ArgumentParser()
+parser.add_argument('--weather-type', type=str, required=True)
+parser.add_argument('--netcdf-key', type=str, required=True)
+parser.add_argument('--year-min', type=int, default=2000)
+parser.add_argument('--year-max', type=int, default=2024)
+args = parser.parse_args()
 
-# filename abbreviations for each individual weather variable file
-weather_type_list = ['pr', 'tmmn', 'tmmx']
-# data keys associated with the above filename abbreviations
-net_cdf_keys = ['precipitation_amount', 'air_temperature', 'air_temperature']
+wt = args.weather_type
+ncd_key = args.netcdf_key
+year_min = args.year_min
+year_max = args.year_max
+
+
 weather_output_folder = 'WeatherData' # location of downloaded GridMet data (corresponds to value in read_gridmet_data.py)
 
 # shapefile names/locations (corresponds to values in create_grid_cell_shapfiles.py)
@@ -20,12 +28,12 @@ grid_cell_folder = os.path.join(shapefile_folder,'GridMetCells')
 
 # average grid point data for each region
 # and record as .csv timeseries
-for wt, ncd_key in zip(weather_type_list, net_cdf_keys):
-  # initializes an empty aggregated data file with a timeseries index covering the entire range of analysis
-  gdmt.initialize_weather_data(shapefile_path, weather_output_folder, year_min, 
+
+# initializes an empty aggregated data file with a timeseries index covering the entire range of analysis
+gdmt.initialize_weather_data(shapefile_path, weather_output_folder, year_min, 
                                wt, shapefile_name_column, shapefile_state_name_column)
-  # loop through the file corresponding to each year of the analysis period
-  for curr_yr in range(year_min, year_max + 1):
+# loop through the file corresponding to each year of the analysis period
+for curr_yr in range(year_min, year_max + 1):
     print('Write GridMetData from: ')
     print(curr_yr, end = " ")
     print(wt)

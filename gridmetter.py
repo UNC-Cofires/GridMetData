@@ -57,7 +57,7 @@ def clip_csa_grid_cells(shapefile_path, grid_cell_folder, grid_cell_name, name_c
     # isolate each shape
     this_shp = shp_gdf[shp_gdf.index == shp_index]
     # extract grid cells within boundaries
-    grid_cells_shp = gpd.sjoin(grid_cell_gdf, this_shp, how="inner", op="within")
+    grid_cells_shp = gpd.sjoin(grid_cell_gdf, this_shp, how="inner", predicate="within")
     # identify shapes with no grid cells
     if len(grid_cells_shp.index) == 0:
       print(shp_row[name_column])
