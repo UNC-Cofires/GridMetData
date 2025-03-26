@@ -19,6 +19,8 @@ grid_cell_name = 'GridMetCells.shp'
 grid_cell_filename = os.path.join(grid_cell_folder, grid_cell_name)
 os.makedirs(grid_cell_folder, exist_ok = True)
 
+weather_output_folder = 'WeatherData'
+
 # extract grid from entire contiguous United States, make a single nationwide grid cell shapefile
 gdmt.extract_grid_shapefile(sample_weather_var + '_' + str(sample_year) + '.nc', weather_output_folder, grid_cell_filename)  
 # for each county, clip the nationwide grid cell file with the county boundary to create county-specific shapefiles
