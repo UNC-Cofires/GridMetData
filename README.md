@@ -42,4 +42,13 @@ python -W ignore aggregate_gridmet_data_to_shape.py
 * subset the counties used by subsetting the county shapefile
 * run using Longleaf Research computing cluster, making a new job for each weather variable
 
+#### Using Longleaf for Execution
 
+Longleaf uses SLURM requests to run program in separate jobs. Bash scripts have already been made to run these files in order. Run the files preprocess_gridmet.bash and agg_weather2county.bash with:
+```
+sbatch preprocess_gridmet.bash
+sbatch --dependency=afterok:<Enter Job ID for preprocess_gridmet.bash> agg_weather2county.bash
+```
+* The dependency ensures the second bash script will not run until the first job is completed.
+* The second file aggregates the weather data for each county by making a separate job for each weather variable.
+* Note: Use ```squeue -u <username>``` and ```sacct -j <Job ID>``` to check progress.
